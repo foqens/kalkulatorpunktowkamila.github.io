@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .checkbox-label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .rainbow-text {
+            background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow 3s linear infinite;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Licznik punktów rekrutacyjnych</h2>
+
+        <label class="input-label">Egzamin z języka polskiego (%)</label>
+        <input class="input-field" type="number" id="egzamin_polski" min="0" max="100">
+
+        <label class="input-label">Egzamin z matematyki (%)</label>
+        <input class="input-field" type="number" id="egzamin_matematyka" min="0" max="100">
+
+        <label class="input-label">Egzamin z języka angielskiego (%)</label>
+        <input class="input-field" type="number" id="egzamin_angielski" min="0" max="100">
+
+        <label class="input-label">Ocena z języka polskiego</label>
+        <input class="input-field" type="number" id="ocena_polski" min="2" max="6">
+
+        <label class="input-label">Ocena z matematyki</label>
+        <input class="input-field" type="number" id="ocena_matematyka" min="2" max="6">
+
+        <label class="input-label">Ocena z języka angielskiego</label>
+        <input class="input-field" type="number" id="ocena_angielski" min="2" max="6">
+
+        <label class="input-label">Ocena z przedmiotu dodatkowego</label>
+        <input class="input-field" type="number" id="ocena_dodatkowy" min="2" max="6">
+
+        <label class="checkbox-label">
+            <input type="checkbox" id="wolontariat">
+            Czy angażujesz się w wolontariat szkolny?
+        </label>
+
+        <label class="checkbox-label">
+            <input type="checkbox" id="konkurs">
+            Czy brałeś/aś udział w dodatkowych konkursach?
+        </label>
+
+        <label class="checkbox-label">
+            <input type="checkbox" id="wyroznienie">
+            Czy otrzymałeś/aś świadectwo z wyróżnieniem?
+        </label>
+
+        <button class="button" onclick="obliczPunkty()">Oblicz punkty</button>
+
+        <div class="result" id="wynik_koncowy"></div>
+    </div>
+
+    <script>
+        function obliczPunkty() {
+            var egzaminPolski = document.getElementById("egzamin_polski").value;
+            var egzaminMatematyka = document.getElementById("egzamin_matematyka").value;
+            var egzaminAngielski = document.getElementById("egzamin_angielski").value;
+
+            var ocenaPolski = document.getElementById("ocena_polski").value;
+            var ocenaMatematyka = document.getElementById("ocena_matematyka").value;
+            var ocenaAngielski = document.getElementById("ocena_angielski").value;
+            var ocenaDodatkowy = document.getElementById("ocena_dodatkowy").value;
+
+            var wolontariat = document.getElementById("wolontariat").checked;
+            var konkurs = document.getElementById("konkurs").checked;
+            var wyróżnienie = document.getElementById("wyroznienie").checked;
+
+            var punktyEgzaminPolski = Math.round(egzaminPolski * 0.35);
+            var punktyEgzaminMatematyka = Math.round(egzaminMatematyka * 0.35);
+            var punktyEgzaminAngielski = Math.round(egzaminAngielski * 0.3);
+
+            var punktyOcenaPolski = ocenaPolski === "6" ? 18 :
+                                    ocenaPolski === "5" ? 17 :
+                                    ocenaPolski === "4" ? 14 :
+                                    ocenaPolski === "3" ? 8 :
+                                    ocenaPolski === "2" ? 2 : 0;
+
+            var punktyOcenaMatematyka = ocenaMatematyka === "6" ? 18 :
+                                        ocenaMatematyka === "5" ? 17 :
+                                        ocenaMatematyka === "4" ? 14 :
+                                        ocenaMatematyka === "3" ? 8 :
+                                        ocenaMatematyka === "2" ? 2 : 0;
+
+            var punktyOcenaAngielski = ocenaAngielski === "6" ? 18 :
+                                        ocenaAngielski === "5" ? 17 :
+                                        ocenaAngielski === "4" ? 14 :
+                                        ocenaAngielski === "3" ? 8 :
+                                        ocenaAngielski === "2" ? 2 : 0;
+
+            var punktyOcenaDodatkowy = ocenaDodatkowy === "6" ? 18 :
+                                        ocenaDodatkowy === "5" ? 17 :
+                                        ocenaDodatkowy === "4" ? 14 :
+                                        ocenaDodatkowy === "3" ? 8 :
+                                        ocenaDodatkowy === "2" ? 2 : 0;
+
+            var punktyWolontariat = wolontariat ? 3 : 0;
+            var punktyWyróżnienie = wyróżnienie ? 7 : 0;
+
+            var punktyKonkurs = 0;
+            if (konkurs) {
+                punktyKonkurs = parseInt(prompt("Podaj liczbę punktów za konkurs:")) || 0;
+            }
+
+            var sumaPunktow = punktyEgzaminPolski + punktyEgzaminMatematyka + punktyEgzaminAngielski +
+                                punktyOcenaPolski + punktyOcenaMatematyka + punktyOcenaAngielski +
+                                punktyOcenaDodatkowy + punktyWolontariat + punktyWyróżnienie + punktyKonkurs;
+
+            var wynikKoncowy = "Suma punktów: <span class='rainbow-text'>" + sumaPunktow + "</span>";
+
+            document.getElementById("wynik_koncowy").innerHTML = wynikKoncowy;
+        }
+    </script>
+</body>
+</html>
